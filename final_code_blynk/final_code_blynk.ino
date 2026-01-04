@@ -18,7 +18,7 @@ char ssid[] = "a";
 char pass[] = "12345678";
 
 /* ================= ANALOG SENSORS ================= */
-#define SOIL_PIN     D0
+#define moisture_PIN     D0
 #define AMMONIA_PIN  D1
 
 #define ADC_MIN  0
@@ -50,10 +50,10 @@ BlynkTimer timer;
 void readAndSendData()
 {
   /* ---------- Analog Sensors ---------- */
-  int soilRaw    = analogRead(SOIL_PIN);
+  int moistureRaw    = analogRead(moisture_PIN);
   int ammoniaRaw = analogRead(AMMONIA_PIN);
 
-  int soilPercent = constrain(map(soilRaw, ADC_MIN, ADC_MAX, 100, 0), 0, 100);
+  int moisturePercent = constrain(map(moistureRaw, ADC_MIN, ADC_MAX, 100, 0), 0, 100);
   int ammoniaPercent = constrain(map(ammoniaRaw, ADC_MIN, ADC_MAX, 0, 100), 0, 100);
 
   /* ---------- MAX30105 ---------- */
@@ -86,14 +86,14 @@ void readAndSendData()
   Serial.print("MAX Temp: "); Serial.println(maxTemp);
   Serial.print("SpO2: "); Serial.println(validSPO2 ? spo2 : -1);
   Serial.print("Ammonia: "); Serial.println(ammoniaPercent);
-  Serial.print("Soil: "); Serial.println(soilPercent);
+  Serial.print("moisture: "); Serial.println(moisturePercent);
   Serial.print("BME Temp: "); Serial.println(bmeTemp);
 
   /* ---------- Blynk Virtual Pins ---------- */
   Blynk.virtualWrite(V0, maxTemp);
   Blynk.virtualWrite(V1, validSPO2 ? spo2 : 0);
   Blynk.virtualWrite(V2, ammoniaPercent);
-  Blynk.virtualWrite(V3, soilPercent);
+  Blynk.virtualWrite(V3, moisturePercent);
   Blynk.virtualWrite(V4, bmeTemp);
 }
 
